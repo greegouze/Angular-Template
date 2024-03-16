@@ -10,6 +10,7 @@ export class UserProfileComponent implements OnInit {
 
 user!: UserBody
 visible: boolean = false
+isAdmin: boolean = true
 
 ngOnInit(): void {
   this.user = {
@@ -21,7 +22,11 @@ ngOnInit(): void {
   };
 }
 
-isVisible(): void {
-  this.visible = !this.visible
+isVisibleAge(): void {
+  this.visible = !this.visible 
+}
+
+isTitleVisible(): void {
+  this.isAdmin = !this.isAdmin
 }
 }

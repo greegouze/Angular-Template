@@ -1,5 +1,10 @@
 <div class="h-[500px] w-full mt-20 flex justify-center">
   <form class="h-full w-[350px] bg-white rounded" action="">
+    <div class="flex justify-center p-4">
+      <h1 class="font-semibold" [ngStyle]="{ color: isAdmin ? 'red' : '' }">
+        Bonjour !
+      </h1>
+    </div>
     <div class="flex flex-col p-3 h-full w-full items-center gap-3">
       <img
         class="h-24 rounded-full shadow-lg"
@@ -22,11 +27,25 @@
           <span>{{ user.quote }}</span>
         </div>
         <button
-          (click)="isVisible()"
+          (click)="isVisibleAge()"
           class="bg-red-500 rounded-md py-2 mb-4 w-36 m-auto text-white"
         >
           Afficher/Masquer
         </button>
+        <div class="flex justify-around">
+          <button
+            (click)="isTitleVisible()"
+            class="border-2 rounded-md py-2 mb-4 w-36 m-auto"
+          >
+            View
+          </button>
+          <button
+            *ngIf="isAdmin === true"
+            class="bg-slate-900 rounded-md py-2 mb-4 w-36 m-auto text-white"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   </form>
