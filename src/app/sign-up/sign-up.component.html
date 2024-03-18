@@ -1,0 +1,104 @@
+<div class="h-full w-full flex justify-center">
+  <form
+    class="h-[600px] w-96 bg-white border-emerald-600 border-2 rounded p-2"
+    #myForm="ngForm"
+    (ngSubmit)="myForm.valid && onSubmit()"
+  >
+    <div class="p-3 border-2">
+      <p>Form submitted ? {{ myForm.submitted }}</p>
+      <p>Form valid ? {{ myForm.valid }}</p>
+      <p>Form invalid ? {{ myForm.invalid }}</p>
+    </div>
+
+    <fieldset class="flex gap-2 flex-col">
+      <label class="mt-2" for="firstname">First Name : </label>
+      <input
+        id="firstname"
+        name="firstname"
+        class="border-2 rounded-sm"
+        type="text"
+        [(ngModel)]="formUser.firstName"
+        #firstname="ngModel"
+        required
+        minlength="3"
+        maxlength="15"
+      />
+
+      <div class="text-rose-800" *ngIf="firstname.errors && myForm.submitted">
+        <span *ngIf="firstname.errors?.['required']"
+          >Le prénom est obligatoire</span
+        >
+        <span *ngIf="firstname.errors?.['minlength']"
+          >La longueur minimale doit être supérieure à 3</span
+        >
+        <span *ngIf="firstname.errors?.['maxlength']"
+          >La longueur minimale doit être inférieur à 15</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="flex gap-2 flex-col">
+      <label class="mt-2" for="lastname">Last Name : </label>
+      <input
+        id="lastname"
+        name="lastname"
+        class="border-2 rounded-sm"
+        type="text"
+        [(ngModel)]="formUser.lastName"
+        #lastname="ngModel"
+        required
+        minlength="3"
+        maxlength="15"
+      />
+      <div class="text-rose-800" *ngIf="lastname.errors && myForm.submitted">
+        <span *ngIf="lastname.errors?.['required']"
+          >Le nom est obligatoire</span
+        >
+        <span *ngIf="lastname.errors?.['minlength']"
+          >La longueur minimale doit être supérieure à 3</span
+        >
+        <span *ngIf="lastname.errors?.['maxlength']"
+          >La longueur minimale doit être inférieur à 15</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="flex gap-2 flex-col">
+      <label class="mt-2" for="email">Email: </label>
+      <input
+        id="email"
+        name="email"
+        class="border-2 rounded-sm"
+        type="text"
+        [(ngModel)]="formUser.email"
+        #email="ngModel"
+        required
+        email
+      />
+
+      <div class="text-rose-800" *ngIf="email.errors && myForm.submitted">
+        <span *ngIf="email.errors?.['required']">L'email est obligatoire</span>
+        <span *ngIf="email.errors?.['email']">L'email est invalid</span>
+      </div>
+    </fieldset>
+
+    <fieldset class="flex gap-2 flex-col">
+      <label class="mt-2" for="password">Password : </label>
+      <input
+        id="password"
+        name="password"
+        class="border-2 rounded-sm"
+        type="text"
+        [(ngModel)]="formUser.password"
+      />
+    </fieldset>
+    <div class="flex justify-center items-center mt-3">
+      <button
+        type="submit"
+        class="w-full bg-emerald-500 py-2 rounded text-white"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
