@@ -1,0 +1,182 @@
+<div class="h-full w-full flex justify-center items-center">
+  <form
+    class="w-[500px] bg-white p-2 flex flex-col gap-3 rounded-md"
+    (ngSubmit)="orderForm.valid && onSubmit()"
+    [formGroup]="orderForm"
+    #myForm="ngForm"
+  >
+    <div class="border-2 p-2">
+      <!-- j'accède à l'état du formulaire  -->
+      <p>Form valid ? {{ orderForm.valid }}</p>
+      <p>Form invalid ? {{ orderForm.invalid }}</p>
+      <!-- *** -->
+      <!-- Cependant si je souhaite déterminer si le form est soumis 
+        je dois passer par la variable de template de la directive ngForm -->
+      <p>Form submitted ? {{ myForm.submitted }}</p>
+    </div>
+
+    <div class="flex flex-col gap-3 shadow-md px-2 py-4 mt-3 rounded-md">
+      <fieldset class="flex flex-col">
+        <label for="title-order">Title</label>
+        <input
+          class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+          name="title-order"
+          type="text"
+          formControlName="title"
+        />
+      </fieldset>
+
+      <div
+        class="text-rose-700"
+        *ngIf="orderForm.controls.title.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.title.errors?.['required']"
+          >Le champ titre est requis</span
+        >
+      </div>
+
+      <fieldset class="flex flex-col">
+        <label for="quantity-order">Quantité</label>
+        <input
+          name="quantity-order"
+          type="number"
+          formControlName="quantity"
+          class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+        />
+      </fieldset>
+
+      <div
+        class="text-rose-700"
+        *ngIf="orderForm.controls.quantity.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.quantity.errors?.['required']"
+          >Le champ quantité est requis</span
+        >
+        <span *ngIf="orderForm.controls.quantity.errors?.['max']"
+          >La quantité maximale doit être inférieure à 5</span
+        >
+      </div>
+
+      <fieldset class="flex flex-col">
+        <label for="date-order">Date de commande</label>
+        <input
+          name="date-order"
+          type="date"
+          formControlName="date"
+          class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+        />
+      </fieldset>
+
+      <div
+        class="text-rose-700"
+        *ngIf="orderForm.controls.date.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.date.errors?.['required']"
+          >Le champ date est requis</span
+        >
+      </div>
+
+      <fieldset class="flex flex-col">
+        <label for="contact-order">Contact</label>
+        <input
+          name="contact-order"
+          type="email"
+          formControlName="contact"
+          class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+        />
+      </fieldset>
+
+      <div
+        class="text-rose-700"
+        *ngIf="orderForm.controls.contact.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.contact.errors?.['required']"
+          >Le champ contact est requis</span
+        >
+        <span *ngIf="orderForm.controls.contact.errors?.['email']"
+          >L'adresse email doit être valide</span
+        >
+      </div>
+
+      <!-- Création du template du formGroup qui sera ajouté dynamiquement au form -->
+      <!-- Utilisation de la directive formArrayName pour binder l'instance de formArray -->
+      <div formArrayName="payments">
+        <button
+          type="button"
+          (click)="addPayment()"
+          *ngIf="payments.length < 1"
+          class="bg-emerald-700 py-2 w-full rounded-md text-white"
+        >
+          Ajouter une date de paiement
+        </button>
+
+        <!-- formGroupName est bindé sur l'index correspondant à un élément du tableau du controls
+        payments et formControlName pour chaque conytole d formGroup  -->
+        <div
+          class="mt-2 flex flex-col gap-2"
+          [formGroupName]="i"
+          *ngFor="let payment of payments.controls; let i = index"
+        >
+          <fieldset class="flex flex-col">
+            <label for="date-{{ i }}">Date :</label>
+            <input
+              name="date-{{ i }}"
+              type="date"
+              formControlName="date"
+              class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+            />
+
+            <!-- Du côté html pour accèder au control je dois récupérer le formgroup au 
+            bon index(payments.controls[i]) puis récupérer le FormControl date et amount
+            (payment.get('date') | payment.get('amount'))  à ne pas oublier de déclarer un formArrayName 
+            pour cibler le tableau des payments dans le formulaire -->
+            <div class="text-rose-700">
+              <span
+                *ngIf="payment.get('date')?.errors?.['required'] && myForm.submitted"
+              >
+                Le champ est requis
+              </span>
+              <span
+                *ngIf="payment.get('date')?.errors?.['min'] != undefined && myForm.submitted"
+              >
+                La date doit être dans le futur
+              </span>
+            </div>
+          </fieldset>
+          <fieldset class="flex flex-col">
+            <label for="amount-{{ i }}">Amount :</label>
+            <input
+              name="amount-{{ i }}"
+              type="text"
+              formControlName="amount"
+              class="border-2 rounded-md focus:border-emerald-600 focus:outline-none"
+            />
+
+            <div class="text-rose-700">
+              <span
+                *ngIf="payment.get('amount')?.errors?.['required'] && myForm.submitted && myForm.submitted"
+              >
+                Le champ est requis
+              </span>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-around p-2 mt-2 gap-2">
+      <button
+        class="border-emerald-600 border-2 py-1 px-2 rounded-md w-full text-emerald-600"
+        type="reset"
+      >
+        Restaurer
+      </button>
+      <button
+        class="bg-emerald-600 text-white py-1 px-2 rounded-md w-full"
+        type="submit"
+      >
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>
