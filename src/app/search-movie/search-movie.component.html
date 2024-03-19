@@ -41,7 +41,7 @@
 
         <div
           class="text-rose-700 p-3"
-          *ngIf="movieDetails && movieDetails.errors"
+          *ngIf="movieDetails && movieDetails.errors && myFormMovie.submitted"
         >
           <p *ngIf="movieDetails.hasError('isRequired')">
             L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné
@@ -74,7 +74,19 @@
         />
       </fieldset>
 
-      <fieldset class="flex flex-col p-3">
+      <div
+        class="text-rose-700 p-3"
+        *ngIf="
+          movieForm.controls.year.touched && movieForm.controls.year.invalid
+        "
+      >
+        <span>{{ movieForm.controls.year.errors?.['min'] }}</span>
+      </div>
+
+      <fieldset
+        class="flex flex-col p-3"
+        *ngIf="movieForm.get('movieDetails')?.get('id')?.value"
+      >
         <label for="fiche">Fiche : </label>
         <select
           name="fiche"
@@ -90,6 +102,7 @@
 
       <div class="flex justify-center p-3">
         <button
+          [disabled]="!movieForm.valid"
           class="py-2 bg-emerald-600 w-full rounded-md text-white"
           type="submit"
         >

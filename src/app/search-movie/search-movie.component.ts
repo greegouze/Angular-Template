@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { isRequiredValidator } from '../validators/searchMovieValidator';
+import { isRequiredValidator, rangeDateValidator } from '../validators/searchMovieValidator';
 
 @Component({
   selector: 'app-search-movie',
@@ -14,7 +14,6 @@ export class SearchMovieComponent implements OnInit {
   constructor(private fb: FormBuilder){}
 
   movieForm = this.fb.group({
-    // 👇 "name" or "identifier"
     movieDetails: this.fb.group(
       {
         id: [''],
@@ -23,7 +22,7 @@ export class SearchMovieComponent implements OnInit {
       { validators: isRequiredValidator() }
     ),
     type: [this.movieTypes[1]],
-    year: [''],
+    year: ['', rangeDateValidator()],
     fiche: [''],
   });
 
@@ -31,11 +30,20 @@ export class SearchMovieComponent implements OnInit {
     this.movieForm.patchValue({
       fiche: this.movieTimes[1]
     })
+
+    this.movieForm.valueChanges
+    .subscribe((value) => {
+      console.log('movieForm changes values :', value);
+     } )
   }
 
   onSubmit(): void{
-    console.log(this.movieForm.value);
-    
+    if(this.movieForm.valid){
+      console.log(this.movieForm.value);
+      this.onSubmit()
+    } else {
+      console.log('Le formulaire n\'est pas valide');
+    }
   }
 
   get movieDetails(){
