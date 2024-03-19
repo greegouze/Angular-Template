@@ -7,13 +7,15 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { SearchMovieComponent } from './search-movie/search-movie.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserProfileComponent,
     SignUpComponent,
-    ReactiveFormComponent
+    ReactiveFormComponent,
+    SearchMovieComponent
   ],
   imports: [
     BrowserModule,

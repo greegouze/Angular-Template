@@ -1,0 +1,101 @@
+<div class="h-full w-full flex justify-center">
+  <form
+    [formGroup]="movieForm"
+    #myFormMovie="ngForm"
+    class="h-[800px] w-[500px] bg-white flex flex-col rounded-md shadow-md"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="flex justify-center p-3 font-semibold">
+      <h1>Search your movies</h1>
+    </div>
+
+    <div class="flex justify-center flex-col items-center border-2 m-2 p-2">
+      <p>Valide : {{ movieForm.valid }}</p>
+      <p>Invalide : {{ movieForm.invalid }}</p>
+      <p>Submit : {{ myFormMovie.submitted }}</p>
+    </div>
+
+    <div class="border-2 flex flex-col shadow-md gap-3">
+      <div formGroupName="movieDetails">
+        <fieldset class="flex flex-col p-3">
+          <label for="id">Identifiant</label>
+          <input
+            formControlName="id"
+            id="id"
+            name="id"
+            type="text"
+            class="border-2 rounded px-1"
+          />
+        </fieldset>
+
+        <fieldset class="flex flex-col p-3">
+          <label for="title">Titre</label>
+          <input
+            formControlName="title"
+            id="title"
+            name="title"
+            type="text"
+            class="border-2 rounded px-1"
+          />
+        </fieldset>
+
+        <div
+          class="text-rose-700 p-3"
+          *ngIf="movieDetails && movieDetails.errors"
+        >
+          <p *ngIf="movieDetails.hasError('isRequired')">
+            L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné
+          </p>
+        </div>
+      </div>
+
+      <fieldset class="flex flex-col p-3">
+        <label for="type">Type : </label>
+        <select
+          name="type"
+          formControlName="type"
+          id="type"
+          class="border-2 rounded px-1"
+        >
+          <option [value]="movieType" *ngFor="let movieType of movieTypes">
+            {{ movieType }}
+          </option>
+        </select>
+      </fieldset>
+
+      <fieldset class="flex flex-col p-3">
+        <label for="year">Année de sortie :</label>
+        <input
+          name="year"
+          type="date"
+          id="year"
+          formControlName="year"
+          class="border-2 rounded px-1"
+        />
+      </fieldset>
+
+      <fieldset class="flex flex-col p-3">
+        <label for="fiche">Fiche : </label>
+        <select
+          name="fiche"
+          formControlName="fiche"
+          id="fiche"
+          class="border-2 rounded px-1"
+        >
+          <option [value]="movieTime" *ngFor="let movieTime of movieTimes">
+            {{ movieTime }}
+          </option>
+        </select>
+      </fieldset>
+
+      <div class="flex justify-center p-3">
+        <button
+          class="py-2 bg-emerald-600 w-full rounded-md text-white"
+          type="submit"
+        >
+          Rechercher
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
